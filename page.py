@@ -21,6 +21,7 @@ class Page:
           print(paragraph)
           numP += 1
   def print_links(self):
+      print('Links:')
       for link in self.links:
           print(link)
   def print_all(self):

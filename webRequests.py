@@ -1,7 +1,19 @@
 import requests
 from page import Page
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
+from urllib.parse import urljoin
 
+def internal_website(base, link):
+    parsedBase = urlparse(base)
+    parsedLink = urlparse(link)
+    return parsedBase.netloc == parsedLink.netloc
+def relative_to_absolute(base, relative):
+    print(base)
+    print(relative)
+    ret = urljoin(base, relative)
+    print(ret)
+    return ret
 def web_requests(webURL):
 #try to request the page
   try:
@@ -19,7 +31,13 @@ def web_requests(webURL):
   linksFull = soup.find_all('a')
   links = list()
   for link in linksFull:
-      links.append(link.get('href'))
+      linkSrc = link.get('href')
+      if internal_website(webURL, linkSrc):
+         absoluteURL = relative_to_absolute(webURL, linkSrc)
+         print(webURL)
+         print(linkSrc)
+         print(absoluteURL)
+         links.append(absoluteURL)
   paragraphListFull = soup.find_all('p')
   paragraphList = list()
   words = dict()
