@@ -1,11 +1,17 @@
 import sys
 from webRequests import *
 from page import Page
+from webSpider import Spider
 print("hello world!")
 print(str(sys.argv))
 try:
   webURL = str(sys.argv[1])
 except IndexError:
   print("No URL provided, please provide a URL")
-page = web_requests(str(sys.argv[1]))
-page.print_all()
+
+spoder = Spider()
+spoder.crawl(str(sys.argv[1]))
+
+search = input("Enter a search string: ")
+print('')
+spoder.searchForWord(search)

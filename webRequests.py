@@ -9,11 +9,15 @@ def internal_website(base, link):
     parsedLink = urlparse(link)
     return parsedBase.netloc == parsedLink.netloc
 def relative_to_absolute(base, relative):
-    print(base)
-    print(relative)
     ret = urljoin(base, relative)
-    print(ret)
     return ret
+def scrub_string(dirty):
+    temp = dirty
+    badChars = [':', '?', '.', '!', ':', '#', ',', '\"', '\'', '(', ')']
+    for i in badChars :
+        temp = temp.replace(i, '')
+    return temp
+
 def web_requests(webURL):
 #try to request the page
   try:
@@ -34,23 +38,28 @@ def web_requests(webURL):
       linkSrc = link.get('href')
       if internal_website(webURL, linkSrc):
          absoluteURL = relative_to_absolute(webURL, linkSrc)
-         print(webURL)
-         print(linkSrc)
-         print(absoluteURL)
          links.append(absoluteURL)
   paragraphListFull = soup.find_all('p')
   paragraphList = list()
   words = dict()
+  titleSplit = title.split()
+  for titleWord in titleSplit:
+      scrubbed = scrub_string(titleWord)
+      if scrubbed in words:
+          words[scrubbed] += 1
+      else:
+          words[scrubbed] = 1
 # fill words dictionary
   for p in paragraphListFull:
       paragraph = p.get_text()
       paragraphList.append(paragraph)
       wordsList = paragraph.split()
       for word in wordsList:
-          if word in words:
-              words[word] += 1
+          scrubbed = scrub_string(word)
+          if scrubbed in words:
+              words[scrubbed] += 1
           else:
-              words[word] = 1
+              words[scrubbed] = 1
 
 # create page object
   p = Page(title, links, words, paragraphList)

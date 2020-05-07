@@ -24,7 +24,11 @@ class Page:
       print('Links:')
       for link in self.links:
           print(link)
+  def print_dictionary(self):
+      print('All words:')
+      for key in self.words:
+          print('word: ', key, ' count: ', self.words[key])
   def print_all(self):
       self.print_title()
-      self.print_paragraphs()
+      self.print_dictionary()
       self.print_links()
