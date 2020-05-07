@@ -2,8 +2,6 @@ import sys
 from webRequests import *
 from page import Page
 from webSpider import Spider
-print("hello world!")
-print(str(sys.argv))
 try:
   webURL = str(sys.argv[1])
 except IndexError:
